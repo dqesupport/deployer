@@ -25,6 +25,11 @@ class Informer
      */
     private $startTime;
 
+    /**
+     * @var array
+     */
+    private $hostStartTimeList = [];
+
     public function __construct(OutputWatcher $output)
     {
         $this->output = $output;
@@ -51,12 +56,7 @@ class Informer
             return;
         }
 
-        $endTime = round(microtime(true) * 1000);
-        $millis = $endTime - $this->startTime;
-        $seconds = floor($millis / 1000);
-        $millis = $millis - $seconds * 1000;
-        $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
-
+        $taskEndTime = $this->getEndTime($this->startTime);
         $shouldReplaceTaskMark =
             $this->output->isDecorated() &&
             $this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL &&
@@ -68,15 +68,24 @@ class Informer
             if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
                 $this->output->writeln("<info>✔</info> Ok");
             } else {
-                $this->output->writeln("<info>✔</info> Ok [$taskTime]");
+                $this->output->writeln("<info>✔</info> Ok [$taskEndTime]");
             }
+        }
+    }
+
+    public function startOnHost(string $hostname)
+    {
+        $this->hostStartTimeList[$hostname] = round(microtime(true) * 1000);
+        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $this->output->writeln("➤ Run on - {$hostname}");
         }
     }
 
     public function endOnHost(string $hostname)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("<info>•</info> done on [$hostname]");
+            $taskEndTime = $this->getEndTime($this->hostStartTimeList[$hostname]);
+            $this->output->writeln("<info>•</info> done on [$hostname] ({$taskEndTime})");
         }
     }
 
@@ -140,5 +149,19 @@ class Informer
 
             $this->output->writeln('', OutputInterface::VERBOSITY_QUIET);
         }
+    }
+
+    /**
+     * @param $startTime
+     * @return string
+     */
+    private function getEndTime($startTime) :string
+    {
+        $endTime = round(microtime(true) * 1000);
+        $millis = $endTime - $startTime;
+        $seconds = floor($millis / 1000);
+        $millis = $millis - $seconds * 1000;
+
+        return ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
     }
 }

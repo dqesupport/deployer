@@ -56,13 +56,15 @@ class SeriesExecutor implements ExecutorInterface
             } else {
                 foreach ($hosts as $host) {
                     if ($task->shouldBePerformed($host)) {
+                        $hostname = $host->getHostname();
+                        $this->informer->startOnHost($hostname);
                         try {
                             $task->run(new Context($host, $this->input, $this->output));
                         } catch (NonFatalException $exception) {
                             $success = false;
                             $this->informer->taskException($exception, $host);
                         }
-                        $this->informer->endOnHost($host->getHostname());
+                        $this->informer->endOnHost($hostname);
                     }
                 }
             }

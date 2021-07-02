@@ -290,6 +290,17 @@ function run($command, $options = [])
         $command = "cd $workingPath && ($command)";
     }
 
+    if (isVeryVerbose()) {
+        $command = sprintf(
+            '%s %s',
+            '/usr/bin/time -f "mem=%Mkb cpu=%S time=%E"',
+            sprintf(
+                strpos($command, '_EOF') === false ? 'sh -c \'%s\'' : '%s',
+                $command
+            )
+        );
+    }
+
     $env = get('env', []) + ($options['env'] ?? []);
     if (!empty($env)) {
         $env = array_to_string($env);
