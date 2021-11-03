@@ -1,6 +1,47 @@
 # Changelog
 
 
+## v6.8.0
+[v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
+
+### Added
+- Documented check_remote task usage
+- Speedup deploy:clear_paths
+- Documented default_timeout config usage
+- Recipe for Joomla!
+
+### Fixed
+- Fixed Silverstripe CMS recipe assets path [#1989]
+- Fixed check_remote task errors [#1990]
+- Fixed check_remote task revision resolution [#1994]
+- Fixed backward compatibility of bin/console for symfony4 recipe
+- Keep consistency with executable naming in lock recipe
+- Unexpected exception in config:* tasks when no stage is defined for host [#1909] [#1909] [#1909]
+- Fixed parsing of installed.json by Composer version 2
+- Fixed only call bin/php on the composer.phar file
+
+
+## v6.7.3
+[v6.7.2...v6.7.3](https://github.com/deployphp/deployer/compare/v6.7.2...v6.7.3)
+
+### Fixed
+- Fixed more Symfony 5 compatibility issues [#1971]
+
+
+## v6.7.2
+[v6.7.1...v6.7.2](https://github.com/deployphp/deployer/compare/v6.7.1...v6.7.2)
+
+### Fixed
+- Fixed compatibility with Symfony 4.x
+
+
+## v6.7.1
+[v6.7.0...v6.7.1](https://github.com/deployphp/deployer/compare/v6.7.0...v6.7.1)
+
+### Fixed
+- Fixed incompatibility with Symfony 5 [#1969]
+
+
 ## v6.7.0
 [v6.6.0...v6.7.0](https://github.com/deployphp/deployer/compare/v6.6.0...v6.7.0)
 
@@ -524,6 +565,12 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1994]: https://github.com/deployphp/deployer/issues/1994
+[#1990]: https://github.com/deployphp/deployer/issues/1990
+[#1989]: https://github.com/deployphp/deployer/issues/1989
+[#1971]: https://github.com/deployphp/deployer/pull/1971
+[#1969]: https://github.com/deployphp/deployer/issues/1969
+[#1909]: https://github.com/deployphp/deployer/issues/1909
 [#1899]: https://github.com/deployphp/deployer/pull/1899
 [#1893]: https://github.com/deployphp/deployer/pull/1893
 [#1881]: https://github.com/deployphp/deployer/pull/1881
